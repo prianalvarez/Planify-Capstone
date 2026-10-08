@@ -1,0 +1,105 @@
+<header class="navbar">
+  <div class="brand">Planify</div>
+
+  <nav>
+    <a class="active">Inicio</a>
+    <a>Explorar</a>
+    <a>Eventos</a>
+    <a>Negocios</a>
+    <a>Admin</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <span class="tag">Descubre Santiago</span>
+
+      <h1>¿Qué quieres hacer hoy?</h1>
+
+      <p>
+        Encuentra lugares, actividades y panoramas para disfrutar solo,
+        con amigos, en pareja o en familia.
+      </p>
+
+      <div class="search">
+        <input
+          type="text"
+          placeholder="Buscar restaurantes, parques, museos..."
+        />
+
+        <button>Buscar</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <h2>Explora por categoría</h2>
+
+    <div class="categories">
+      <button>🍽️ Restaurantes</button>
+      <button>🌳 Parques</button>
+      <button>🎨 Cultura</button>
+      <button>🎵 Eventos</button>
+      <button>☕ Cafeterías</button>
+    </div>
+
+    <div class="section-header">
+      <div>
+        <h2>Lugares recomendados</h2>
+        <p>Algunas opciones para tu próximo panorama.</p>
+      </div>
+
+      <a>Ver todos</a>
+    </div>
+
+    <div class="places">
+      @if (cargando()) {
+        <p>Cargando lugares...</p>
+      }
+
+      @if (error()) {
+        <p>{{ error() }}</p>
+      }
+
+      @for (lugar of lugares(); track lugar.id) {
+        <article class="place-card">
+          @if (lugar.imagen_url) {
+            <img
+              class="place-image"
+              [src]="lugar.imagen_url"
+              [alt]="lugar.nombre"
+            />
+          } @else {
+            <div class="image-placeholder">
+              📍
+            </div>
+          }
+
+          <div class="place-info">
+            <span class="category">
+              {{ lugar.categoria }}
+            </span>
+
+            <h3>
+              {{ lugar.nombre }}
+            </h3>
+
+            <p>
+              📍 {{ lugar.comuna }}
+            </p>
+
+            <button>
+              Ver lugar
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>Planify</strong>
+  <span>Encuentra tu próximo panorama.</span>
+</footer>

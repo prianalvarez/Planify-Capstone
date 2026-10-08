@@ -29,8 +29,15 @@ SECRET_KEY = 'django-insecure-rk2!2_t&7@297w79u6@x@j6js9-az&oo7j93w79zvu-(nqmffn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'tying-tabloid-veggie.ngrok-free.dev',
+]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://tying-tabloid-veggie.ngrok-free.dev',
+]
 
 # Application definition
 
@@ -43,10 +50,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'lugares',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -135,3 +144,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+]
