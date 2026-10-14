@@ -26,6 +26,8 @@ export class App implements OnInit {
   cargando = signal(true);
   error = signal('');
 
+  lugarSeleccionado = signal<Lugar | null>(null);
+
   ngOnInit(): void {
     this.obtenerLugares();
   }
@@ -35,18 +37,24 @@ export class App implements OnInit {
       .get<Lugar[]>('http://127.0.0.1:8000/api/lugares/')
       .subscribe({
         next: (datos) => {
-          console.log('Lugares recibidos:', datos);
-
           this.lugares.set(datos);
           this.cargando.set(false);
         },
-
         error: (err) => {
           console.error('Error al obtener lugares:', err);
-
           this.error.set('No se pudieron cargar los lugares.');
           this.cargando.set(false);
         }
       });
+  }
+
+  verLugar(lugar: Lugar): void {
+    this.lugarSeleccionado.set(lugar);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  volverInicio(): void {
+    this.lugarSeleccionado.set(null);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

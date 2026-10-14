@@ -1,8 +1,8 @@
 <header class="navbar">
-  <div class="brand">Planify</div>
+  <div class="brand" (click)="volverInicio()">Planify</div>
 
   <nav>
-    <a class="active">Inicio</a>
+    <a class="active" (click)="volverInicio()">Inicio</a>
     <a>Explorar</a>
     <a>Eventos</a>
     <a>Negocios</a>
@@ -10,94 +10,243 @@
   </nav>
 </header>
 
-<main>
-  <section class="hero">
-    <div class="hero-content">
-      <span class="tag">Descubre Santiago</span>
+@if (!lugarSeleccionado()) {
 
-      <h1>¿Qué quieres hacer hoy?</h1>
+  <!-- ========================= -->
+  <!-- VISTA PRINCIPAL PLANIFY -->
+  <!-- ========================= -->
 
-      <p>
-        Encuentra lugares, actividades y panoramas para disfrutar solo,
-        con amigos, en pareja o en familia.
-      </p>
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <span class="tag">Descubre Santiago</span>
 
-      <div class="search">
-        <input
-          type="text"
-          placeholder="Buscar restaurantes, parques, museos..."
-        />
+        <h1>¿Qué quieres hacer hoy?</h1>
 
-        <button>Buscar</button>
+        <p>
+          Encuentra lugares, actividades y panoramas para disfrutar solo,
+          con amigos, en pareja o en familia.
+        </p>
+
+        <div class="search">
+          <input
+            type="text"
+            placeholder="Buscar restaurantes, parques, museos..."
+          />
+
+          <button>Buscar</button>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="content">
-    <h2>Explora por categoría</h2>
+    <section class="content">
 
-    <div class="categories">
-      <button>🍽️ Restaurantes</button>
-      <button>🌳 Parques</button>
-      <button>🎨 Cultura</button>
-      <button>🎵 Eventos</button>
-      <button>☕ Cafeterías</button>
-    </div>
+      <h2>Explora por categoría</h2>
 
-    <div class="section-header">
-      <div>
-        <h2>Lugares recomendados</h2>
-        <p>Algunas opciones para tu próximo panorama.</p>
+      <div class="categories">
+        <button>🍽️ Restaurantes</button>
+        <button>🌳 Parques</button>
+        <button>🎨 Cultura</button>
+        <button>🎵 Eventos</button>
+        <button>☕ Cafeterías</button>
       </div>
 
-      <a>Ver todos</a>
-    </div>
+      <div class="section-header">
+        <div>
+          <h2>Lugares recomendados</h2>
+          <p>Algunas opciones para tu próximo panorama.</p>
+        </div>
 
-    <div class="places">
-      @if (cargando()) {
-        <p>Cargando lugares...</p>
-      }
+        <a>Ver todos</a>
+      </div>
 
-      @if (error()) {
-        <p>{{ error() }}</p>
-      }
+      <div class="places">
 
-      @for (lugar of lugares(); track lugar.id) {
-        <article class="place-card">
-          @if (lugar.imagen_url) {
-            <img
-              class="place-image"
-              [src]="lugar.imagen_url"
-              [alt]="lugar.nombre"
-            />
-          } @else {
-            <div class="image-placeholder">
-              📍
+        @if (cargando()) {
+          <p>Cargando lugares...</p>
+        }
+
+        @if (error()) {
+          <p>{{ error() }}</p>
+        }
+
+        @for (lugar of lugares(); track lugar.id) {
+
+          <article class="place-card">
+
+            @if (lugar.imagen_url) {
+
+              <img
+                class="place-image"
+                [src]="lugar.imagen_url"
+                [alt]="lugar.nombre"
+              />
+
+            } @else {
+
+              <div class="image-placeholder">
+                📍
+              </div>
+
+            }
+
+            <div class="place-info">
+
+              <span class="category">
+                {{ lugar.categoria }}
+              </span>
+
+              <h3>
+                {{ lugar.nombre }}
+              </h3>
+
+              <p>
+                📍 {{ lugar.comuna }}
+              </p>
+
+              <button (click)="verLugar(lugar)">
+                Ver lugar
+              </button>
+
             </div>
-          }
 
-          <div class="place-info">
-            <span class="category">
-              {{ lugar.categoria }}
-            </span>
+          </article>
 
-            <h3>
-              {{ lugar.nombre }}
-            </h3>
+        }
 
-            <p>
-              📍 {{ lugar.comuna }}
+      </div>
+
+    </section>
+  </main>
+
+} @else {
+
+  <!-- ========================= -->
+  <!-- VISTA DETALLE DEL LUGAR -->
+  <!-- ========================= -->
+
+  @if (lugarSeleccionado(); as lugar) {
+
+    <main class="detail-page">
+
+      <button
+        class="back-button"
+        (click)="volverInicio()"
+      >
+        ← Volver a explorar
+      </button>
+
+      <section class="detail-container">
+
+        <!-- Imagen -->
+
+        @if (lugar.imagen_url) {
+
+          <img
+            class="detail-image"
+            [src]="lugar.imagen_url"
+            [alt]="lugar.nombre"
+          />
+
+        } @else {
+
+          <div class="detail-placeholder">
+            📍
+          </div>
+
+        }
+
+        <!-- Información -->
+
+        <div class="detail-content">
+
+          <span class="category">
+            {{ lugar.categoria }}
+          </span>
+
+          <h1>
+            {{ lugar.nombre }}
+          </h1>
+
+          <p class="location">
+            📍 {{ lugar.comuna }}
+          </p>
+
+          <section class="detail-info">
+
+            <h3>Sobre este lugar</h3>
+
+            <p class="description">
+              {{ lugar.descripcion }}
             </p>
 
-            <button>
-              Ver lugar
-            </button>
-          </div>
-        </article>
-      }
-    </div>
-  </section>
-</main>
+          </section>
+
+          <section class="detail-info">
+
+            <h3>Dirección</h3>
+
+            <p>
+              📍 {{ lugar.direccion }}
+            </p>
+
+          </section>
+
+          <!-- Eventos -->
+
+          <section class="detail-section">
+
+            <div class="detail-section-header">
+              <h2>Eventos próximos</h2>
+            </div>
+
+            <div class="empty-message">
+              <span>🎉</span>
+
+              <div>
+                <strong>Próximamente</strong>
+
+                <p>
+                  Aquí podrás encontrar eventos y actividades
+                  relacionadas con este lugar.
+                </p>
+              </div>
+            </div>
+
+          </section>
+
+          <!-- Reseñas -->
+
+          <section class="detail-section">
+
+            <div class="detail-section-header">
+              <h2>Reseñas</h2>
+            </div>
+
+            <div class="empty-message">
+              <span>⭐</span>
+
+              <div>
+                <strong>Reseñas de la comunidad</strong>
+
+                <p>
+                  Próximamente los usuarios podrán compartir
+                  sus experiencias y recomendaciones.
+                </p>
+              </div>
+            </div>
+
+          </section>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  }
+
+}
 
 <footer>
   <strong>Planify</strong>
