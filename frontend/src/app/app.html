@@ -1,27 +1,74 @@
 <header class="navbar">
-  <div class="brand" (click)="volverInicio()">Planify</div>
+
+  <div
+    class="brand"
+    (click)="volverInicio()"
+  >
+    Planify
+  </div>
 
   <nav>
-    <a class="active" (click)="volverInicio()">Inicio</a>
-    <a>Explorar</a>
-    <a>Eventos</a>
-    <a>Negocios</a>
-    <a>Admin</a>
+
+    <a
+      [class.active]="vista() === 'inicio' && !lugarSeleccionado()"
+      (click)="volverInicio()"
+    >
+      Inicio
+    </a>
+
+    <a
+      (click)="volverInicio()"
+    >
+      Explorar
+    </a>
+
+    <a
+      [class.active]="vista() === 'eventos'"
+      (click)="mostrarEventos()"
+    >
+      Eventos
+    </a>
+
+    <a
+  [class.active]="vista() === 'negocios'"
+  (click)="mostrarNegocios()"
+    >
+      Negocios
+    </a>
+
+    <a
+      [class.active]="vista() === 'admin'"
+      (click)="mostrarAdmin()"
+    >
+      Admin
+    </a>
+
   </nav>
+
 </header>
 
-@if (!lugarSeleccionado()) {
 
-  <!-- ========================= -->
-  <!-- VISTA PRINCIPAL PLANIFY -->
-  <!-- ========================= -->
+<!-- ================================================= -->
+<!-- INICIO / EXPLORAR -->
+<!-- ================================================= -->
+
+@if (!lugarSeleccionado() && vista() === 'inicio') {
 
   <main>
-    <section class="hero">
-      <div class="hero-content">
-        <span class="tag">Descubre Santiago</span>
 
-        <h1>¿Qué quieres hacer hoy?</h1>
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <div class="hero-content">
+
+        <span class="tag">
+          Descubre Santiago
+        </span>
+
+        <h1>
+          ¿Qué quieres hacer hoy?
+        </h1>
 
         <p>
           Encuentra lugares, actividades y panoramas para disfrutar solo,
@@ -29,46 +76,100 @@
         </p>
 
         <div class="search">
+
           <input
             type="text"
             placeholder="Buscar restaurantes, parques, museos..."
           />
 
-          <button>Buscar</button>
+          <button>
+            Buscar
+          </button>
+
         </div>
+
       </div>
+
     </section>
+
+
+    <!-- CONTENIDO -->
 
     <section class="content">
 
-      <h2>Explora por categoría</h2>
+      <h2>
+        Explora por categoría
+      </h2>
 
       <div class="categories">
-        <button>🍽️ Restaurantes</button>
-        <button>🌳 Parques</button>
-        <button>🎨 Cultura</button>
-        <button>🎵 Eventos</button>
-        <button>☕ Cafeterías</button>
+
+        <button>
+          🍽️ Restaurantes
+        </button>
+
+        <button>
+          🌳 Parques
+        </button>
+
+        <button>
+          🎨 Cultura
+        </button>
+
+        <button
+          (click)="mostrarEventos()"
+        >
+          🎵 Eventos
+        </button>
+
+        <button>
+          ☕ Cafeterías
+        </button>
+
       </div>
+
 
       <div class="section-header">
+
         <div>
-          <h2>Lugares recomendados</h2>
-          <p>Algunas opciones para tu próximo panorama.</p>
+
+          <h2>
+            Lugares recomendados
+          </h2>
+
+          <p>
+            Algunas opciones para tu próximo panorama.
+          </p>
+
         </div>
 
-        <a>Ver todos</a>
+        <a>
+          Ver todos
+        </a>
+
       </div>
+
+
+      <!-- LUGARES -->
 
       <div class="places">
 
         @if (cargando()) {
-          <p>Cargando lugares...</p>
+
+          <p>
+            Cargando lugares...
+          </p>
+
         }
 
+
         @if (error()) {
-          <p>{{ error() }}</p>
+
+          <p>
+            {{ error() }}
+          </p>
+
         }
+
 
         @for (lugar of lugares(); track lugar.id) {
 
@@ -90,6 +191,7 @@
 
             }
 
+
             <div class="place-info">
 
               <span class="category">
@@ -104,7 +206,9 @@
                 📍 {{ lugar.comuna }}
               </p>
 
-              <button (click)="verLugar(lugar)">
+              <button
+                (click)="verLugar(lugar)"
+              >
                 Ver lugar
               </button>
 
@@ -117,13 +221,491 @@
       </div>
 
     </section>
+
   </main>
 
-} @else {
 
-  <!-- ========================= -->
-  <!-- VISTA DETALLE DEL LUGAR -->
-  <!-- ========================= -->
+<!-- ================================================= -->
+<!-- EVENTOS -->
+<!-- ================================================= -->
+
+} @else if (vista() === 'eventos') {
+
+  <main class="events-page">
+
+    <!-- HERO EVENTOS -->
+
+    <section class="events-hero">
+
+      <span class="tag">
+        Panoramas en Santiago
+      </span>
+
+      <h1>
+        Eventos y actividades
+      </h1>
+
+      <p>
+        Descubre experiencias, panoramas y actividades publicadas
+        por los lugares disponibles en Planify.
+      </p>
+
+    </section>
+
+
+    <!-- LISTADO EVENTOS -->
+
+    <section class="content">
+
+      <div class="section-header">
+
+        <div>
+
+          <h2>
+            Próximos eventos
+          </h2>
+
+          <p>
+            Encuentra algo diferente para tu próximo panorama.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="events-grid">
+
+        @for (evento of eventos(); track evento.id) {
+
+          @if (evento.activo) {
+
+            <article class="event-card">
+
+              <div class="event-date">
+
+                <span class="event-day">
+                  📅 {{ evento.fecha }}
+                </span>
+
+                <span>
+                  🕐 {{ evento.hora }}
+                </span>
+
+              </div>
+
+
+              <div class="event-info">
+
+                <span class="category">
+                  Evento
+                </span>
+
+                <h3>
+                  {{ evento.titulo }}
+                </h3>
+
+                <p class="event-location">
+                  📍 {{ evento.lugar_nombre }}
+                </p>
+
+                <p class="event-description">
+                  {{ evento.descripcion }}
+                </p>
+
+              </div>
+
+            </article>
+
+          }
+
+        } @empty {
+
+          <div class="empty-message">
+
+            <span>
+              🎉
+            </span>
+
+            <div>
+
+              <strong>
+                No hay eventos publicados.
+              </strong>
+
+              <p>
+                Próximamente encontrarás nuevas actividades en Planify.
+              </p>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    </section>
+
+  </main>
+
+} @else if (vista() === 'admin') {
+
+  <main class="admin-page">
+
+    <section class="admin-hero">
+
+      <span class="tag">
+        Administración
+      </span>
+
+      <h1>
+        Panel de Planify
+      </h1>
+
+      <p>
+        Resumen general de la plataforma y sus contenidos registrados.
+      </p>
+
+    </section>
+
+    <section class="admin-content">
+
+      <div class="admin-stats">
+
+        <article class="stat-card">
+          <span>📍</span>
+
+          <div>
+            <strong>{{ lugares().length }}</strong>
+            <p>Lugares registrados</p>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <span>🎉</span>
+
+          <div>
+            <strong>{{ eventos().length }}</strong>
+            <p>Eventos publicados</p>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <span>🏪</span>
+
+          <div>
+            <strong>1</strong>
+            <p>Negocio activo</p>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <span>👥</span>
+
+          <div>
+            <strong>0</strong>
+            <p>Usuarios registrados</p>
+          </div>
+        </article>
+
+      </div>
+
+
+      <section class="admin-panel">
+
+        <div>
+
+          <h2>
+            Gestión de la plataforma
+          </h2>
+
+          <p>
+            Administra los registros almacenados en Planify.
+          </p>
+
+        </div>
+
+        <div class="admin-actions">
+
+          <button (click)="volverInicio()">
+            📍 Ver lugares
+          </button>
+
+          <button (click)="mostrarEventos()">
+            🎉 Ver eventos
+          </button>
+
+          <button (click)="mostrarNegocios()">
+            🏪 Panel negocio
+          </button>
+
+          <a
+            class="admin-django"
+            href="http://127.0.0.1:8000/admin/"
+            target="_blank"
+          >
+            ⚙️ Abrir Django Admin
+          </a>
+
+        </div>
+
+      </section>
+
+
+      <section class="admin-panel">
+
+        <h2>
+          Últimos eventos
+        </h2>
+
+        <div class="admin-list">
+
+          @for (evento of eventos(); track evento.id) {
+
+            <div class="admin-list-item">
+
+              <div>
+
+                <strong>
+                  {{ evento.titulo }}
+                </strong>
+
+                <p>
+                  📍 {{ evento.lugar_nombre }}
+                </p>
+
+              </div>
+
+              <span>
+                {{ evento.fecha }}
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+<!-- ================================================= -->
+<!-- PANEL DE NEGOCIO -->
+<!-- ================================================= -->
+
+} @else if (vista() === 'negocios') {
+
+  <main class="business-page">
+
+    <section class="business-hero">
+
+      <span class="tag">
+        Planify para Negocios
+      </span>
+
+      <h1>
+        Panel del establecimiento
+      </h1>
+
+      <p>
+        Publica actividades y eventos para que los usuarios
+        puedan descubrir nuevas experiencias en Planify.
+      </p>
+
+    </section>
+
+
+    <section class="business-content">
+
+      <!-- FORMULARIO -->
+
+      <div class="business-card">
+
+        <div class="business-header">
+
+          <div>
+            <h2>Publicar nuevo evento</h2>
+
+            <p>
+              Completa la información de la actividad.
+            </p>
+          </div>
+
+          <span class="business-status">
+            ● Negocio activo
+          </span>
+
+        </div>
+
+
+        <div class="business-form">
+
+          <label>
+            Título del evento
+
+            <input
+              #titulo
+              type="text"
+              placeholder="Ej: Noche de música en vivo"
+            />
+          </label>
+
+
+          <label>
+            Descripción
+
+            <textarea
+              #descripcion
+              rows="4"
+              placeholder="Describe brevemente la actividad..."
+            ></textarea>
+          </label>
+
+
+          <div class="form-row">
+
+            <label>
+              Fecha
+
+              <input
+                #fecha
+                type="date"
+              />
+            </label>
+
+
+            <label>
+              Hora
+
+              <input
+                #hora
+                type="time"
+              />
+            </label>
+
+          </div>
+
+
+          <label>
+            Lugar
+
+            <select #lugar>
+
+              <option value="">
+                Selecciona un lugar
+              </option>
+
+              @for (item of lugares(); track item.id) {
+
+                <option [value]="item.id">
+                  {{ item.nombre }}
+                </option>
+
+              }
+
+            </select>
+
+          </label>
+
+
+          <button
+            class="publish-button"
+            (click)="crearEvento(
+              titulo.value,
+              descripcion.value,
+              fecha.value,
+              hora.value,
+              lugar.value
+            )"
+          >
+            Publicar evento
+          </button>
+
+
+          @if (mensajeNegocio()) {
+
+            <div class="business-message">
+              {{ mensajeNegocio() }}
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+
+      <!-- EVENTOS PUBLICADOS -->
+
+      <div class="business-card">
+
+        <div class="business-header">
+
+          <div>
+            <h2>Eventos publicados</h2>
+
+            <p>
+              Actividades disponibles actualmente en Planify.
+            </p>
+          </div>
+
+        </div>
+
+
+        <div class="business-events">
+
+          @for (evento of eventos(); track evento.id) {
+
+            <div class="business-event">
+
+              <div>
+
+                <strong>
+                  {{ evento.titulo }}
+                </strong>
+
+                <p>
+                  📍 {{ evento.lugar_nombre }}
+                </p>
+
+              </div>
+
+
+              <div class="business-event-date">
+
+                <span>
+                  📅 {{ evento.fecha }}
+                </span>
+
+                <span>
+                  {{ evento.hora }}
+                </span>
+
+              </div>
+
+            </div>
+
+          }
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+<!-- ================================================= -->
+<!-- DETALLE LUGAR -->
+<!-- ================================================= -->
+
+
+} @else {
 
   @if (lugarSeleccionado(); as lugar) {
 
@@ -136,9 +718,10 @@
         ← Volver a explorar
       </button>
 
+
       <section class="detail-container">
 
-        <!-- Imagen -->
+        <!-- IMAGEN -->
 
         @if (lugar.imagen_url) {
 
@@ -156,7 +739,8 @@
 
         }
 
-        <!-- Información -->
+
+        <!-- INFORMACIÓN -->
 
         <div class="detail-content">
 
@@ -172,9 +756,14 @@
             📍 {{ lugar.comuna }}
           </p>
 
+
+          <!-- DESCRIPCIÓN -->
+
           <section class="detail-info">
 
-            <h3>Sobre este lugar</h3>
+            <h3>
+              Sobre este lugar
+            </h3>
 
             <p class="description">
               {{ lugar.descripcion }}
@@ -182,9 +771,14 @@
 
           </section>
 
+
+          <!-- DIRECCIÓN -->
+
           <section class="detail-info">
 
-            <h3>Dirección</h3>
+            <h3>
+              Dirección
+            </h3>
 
             <p>
               📍 {{ lugar.direccion }}
@@ -192,48 +786,105 @@
 
           </section>
 
-          <!-- Eventos -->
+
+          <!-- EVENTOS DEL LUGAR -->
 
           <section class="detail-section">
 
             <div class="detail-section-header">
-              <h2>Eventos próximos</h2>
+
+              <h2>
+                Eventos próximos
+              </h2>
+
             </div>
 
-            <div class="empty-message">
-              <span>🎉</span>
 
-              <div>
-                <strong>Próximamente</strong>
+            @for (
+              evento of eventosDelLugar(lugar.id);
+              track evento.id
+            ) {
 
-                <p>
-                  Aquí podrás encontrar eventos y actividades
-                  relacionadas con este lugar.
-                </p>
+              <div class="place-event">
+
+                <div>
+
+                  <strong>
+                    {{ evento.titulo }}
+                  </strong>
+
+                  <p>
+                    📅 {{ evento.fecha }}
+                    ·
+                    🕐 {{ evento.hora }}
+                  </p>
+
+                  <p>
+                    {{ evento.descripcion }}
+                  </p>
+
+                </div>
+
               </div>
-            </div>
+
+            } @empty {
+
+              <div class="empty-message">
+
+                <span>
+                  🎉
+                </span>
+
+                <div>
+
+                  <strong>
+                    Sin eventos programados
+                  </strong>
+
+                  <p>
+                    Este lugar todavía no tiene eventos publicados.
+                  </p>
+
+                </div>
+
+              </div>
+
+            }
 
           </section>
 
-          <!-- Reseñas -->
+
+          <!-- RESEÑAS -->
 
           <section class="detail-section">
 
             <div class="detail-section-header">
-              <h2>Reseñas</h2>
+
+              <h2>
+                Reseñas
+              </h2>
+
             </div>
 
             <div class="empty-message">
-              <span>⭐</span>
+
+              <span>
+                ⭐
+              </span>
 
               <div>
-                <strong>Reseñas de la comunidad</strong>
+
+                <strong>
+                  Reseñas de la comunidad
+                </strong>
 
                 <p>
                   Próximamente los usuarios podrán compartir
                   sus experiencias y recomendaciones.
                 </p>
+
               </div>
+
             </div>
 
           </section>
@@ -248,7 +899,19 @@
 
 }
 
+
+<!-- ================================================= -->
+<!-- FOOTER -->
+<!-- ================================================= -->
+
 <footer>
-  <strong>Planify</strong>
-  <span>Encuentra tu próximo panorama.</span>
+
+  <strong>
+    Planify
+  </strong>
+
+  <span>
+    Encuentra tu próximo panorama.
+  </span>
+
 </footer>
