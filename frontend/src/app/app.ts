@@ -53,7 +53,7 @@ export class App implements OnInit {
 
   obtenerLugares(): void {
     this.http
-      .get<Lugar[]>('http://127.0.0.1:8000/api/lugares/')
+      .get<Lugar[]>('https://planify-api-j9o2.onrender.com/api/lugares/')
       .subscribe({
         next: (datos) => {
           this.lugares.set(datos);
@@ -69,7 +69,7 @@ export class App implements OnInit {
 
   obtenerEventos(): void {
     this.http
-      .get<Evento[]>('http://127.0.0.1:8000/api/eventos/')
+      .get<Evento[]>('https://planify-api-j9o2.onrender.com/api/eventos/')
       .subscribe({
         next: (datos) => {
           this.eventos.set(datos);
@@ -133,7 +133,7 @@ crearEvento(
 
   this.http
     .post<Evento>(
-      'http://127.0.0.1:8000/api/eventos/',
+      'https://planify-api-j9o2.onrender.com/api/eventos/',
       nuevoEvento
     )
     .subscribe({

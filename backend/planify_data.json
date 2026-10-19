@@ -1,0 +1,124 @@
+[
+{
+  "model": "lugares.lugar",
+  "pk": 1,
+  "fields": {
+    "nombre": "Parque Bicentenario",
+    "descripcion": "Parque urbano con áreas verdes y espacios recreativos.",
+    "direccion": "Av. Bicentenario 3236",
+    "comuna": "Vitacura",
+    "categoria": "Parque",
+    "imagen_url": "https://upload.wikimedia.org/wikipedia/commons/5/55/Parque_Bicentenario%2C_Vitacura%2C_Santiago_20200314_02.jpg?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=original",
+    "activo": true,
+    "fecha_creacion": "2026-09-28T15:28:34.208Z"
+  }
+},
+{
+  "model": "lugares.lugar",
+  "pk": 2,
+  "fields": {
+    "nombre": "Museo Nacional de Bellas Artes",
+    "descripcion": "Museo dedicado a las artes visuales.",
+    "direccion": "José Miguel de la Barra 650",
+    "comuna": "Santiago",
+    "categoria": "Cultura",
+    "imagen_url": "https://images.unsplash.com/photo-1564399579883-451a5d44ec08",
+    "activo": true,
+    "fecha_creacion": "2026-09-28T15:32:26.814Z"
+  }
+},
+{
+  "model": "lugares.lugar",
+  "pk": 3,
+  "fields": {
+    "nombre": "Parque Metropolitano",
+    "descripcion": "Área recreativa y natural de Santiago.",
+    "direccion": "Pío Nono 450",
+    "comuna": "Recoleta",
+    "categoria": "Parque",
+    "imagen_url": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e",
+    "activo": true,
+    "fecha_creacion": "2026-09-28T15:33:51.584Z"
+  }
+},
+{
+  "model": "lugares.lugar",
+  "pk": 7,
+  "fields": {
+    "nombre": "Parque Quinta Normal",
+    "descripcion": "Parque urbano con áreas verdes, museos y espacios recreativos.",
+    "direccion": "Matucana 520",
+    "comuna": "Santiago",
+    "categoria": "Parque",
+    "imagen_url": "",
+    "activo": true,
+    "fecha_creacion": "2026-09-28T23:22:29.383Z"
+  }
+},
+{
+  "model": "lugares.lugar",
+  "pk": 8,
+  "fields": {
+    "nombre": "Cerro Santa Lucía",
+    "descripcion": "Parque urbano y punto turístico de Santiago.",
+    "direccion": "Victoria Subercaseaux 499",
+    "comuna": "Santiago",
+    "categoria": "Turismo",
+    "imagen_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cf/Vista_lateral_Cerro_Santa_Lucia.jpg/960px-Vista_lateral_Cerro_Santa_Lucia.jpg?utm_source=es.wikipedia.org&utm_campaign=imageinfo&utm_content=th",
+    "activo": true,
+    "fecha_creacion": "2026-10-08T13:55:11.178Z"
+  }
+},
+{
+  "model": "lugares.evento",
+  "pk": 1,
+  "fields": {
+    "titulo": "Tarde Cultural en Bellas Artes",
+    "descripcion": "Una jornada para recorrer las exposiciones y disfrutar\r\nde actividades culturales.",
+    "fecha": "2026-10-17",
+    "hora": "10:00:00",
+    "lugar": 2,
+    "activo": true,
+    "fecha_creacion": "2026-10-15T14:49:43.871Z"
+  }
+},
+{
+  "model": "lugares.evento",
+  "pk": 2,
+  "fields": {
+    "titulo": "Atardecer en Cerro Santa Lucía",
+    "descripcion": "Panorama para disfrutar el atardecer y recorrer uno\r\nde los lugares históricos de Santiago.",
+    "fecha": "2026-10-16",
+    "hora": "18:30:00",
+    "lugar": 8,
+    "activo": true,
+    "fecha_creacion": "2026-10-15T14:51:28.402Z"
+  }
+},
+{
+  "model": "lugares.evento",
+  "pk": 3,
+  "fields": {
+    "titulo": "Festival Planify",
+    "descripcion": "Música, gastronomía y actividades.",
+    "fecha": "2026-10-18",
+    "hora": "14:00:00",
+    "lugar": 8,
+    "activo": true,
+    "fecha_creacion": "2026-10-15T15:15:17.746Z"
+  }
+},
+{
+  "model": "lugares.evento",
+  "pk": 4,
+  "fields": {
+    "titulo": "Prueba Planify 0.3",
+    "descripcion": "Esto es una demostración",
+    "fecha": "2026-10-15",
+    "hora": "17:00:00",
+    "lugar": 1,
+    "activo": true,
+    "fecha_creacion": "2026-10-15T16:28:54.207Z"
+  }
+}
+]
