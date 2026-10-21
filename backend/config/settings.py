@@ -54,9 +54,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
-    'lugares',
+    'rest_framework.authtoken',
+
     'corsheaders',
+
+    'lugares',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
@@ -185,3 +190,13 @@ if FRONTEND_URL:
     CORS_ALLOWED_ORIGINS.append(
         FRONTEND_URL.rstrip('/')
     )
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}

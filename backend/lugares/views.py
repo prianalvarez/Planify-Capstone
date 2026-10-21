@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from .models import Lugar, Evento
 from .serializers import LugarSerializer, EventoSerializer
+from rest_framework.authtoken.models import Token
 
 
 class LugarViewSet(viewsets.ModelViewSet):
