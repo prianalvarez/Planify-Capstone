@@ -7,14 +7,20 @@
     Planify
   </div>
 
+
   <nav>
 
     <a
-      [class.active]="vista() === 'inicio' && !lugarSeleccionado()"
+      [class.active]="
+        vista() === 'inicio'
+        &&
+        !lugarSeleccionado()
+      "
       (click)="volverInicio()"
     >
       Inicio
     </a>
+
 
     <a
       (click)="volverInicio()"
@@ -22,26 +28,98 @@
       Explorar
     </a>
 
+
     <a
-      [class.active]="vista() === 'eventos'"
+      [class.active]="
+        vista() === 'eventos'
+      "
       (click)="mostrarEventos()"
     >
       Eventos
     </a>
 
-    <a
-  [class.active]="vista() === 'negocios'"
-  (click)="mostrarNegocios()"
-    >
-      Negocios
-    </a>
 
-    <a
-      [class.active]="vista() === 'admin'"
-      (click)="mostrarAdmin()"
-    >
-      Admin
-    </a>
+    @if (esPersona()) {
+
+      <a
+        [class.active]="
+          vista() === 'perfil'
+        "
+        (click)="mostrarPerfil()"
+      >
+        Mi perfil
+      </a>
+
+    }
+
+
+    @if (esNegocio()) {
+
+      <a
+        [class.active]="
+          vista() === 'negocios'
+        "
+        (click)="mostrarNegocios()"
+      >
+        Mi negocio
+      </a>
+
+    }
+
+
+    @if (esAdmin()) {
+
+      <a
+        [class.active]="
+          vista() === 'admin'
+        "
+        (click)="mostrarAdmin()"
+      >
+        Administración
+      </a>
+
+    }
+
+
+    @if (!usuarioActual()) {
+
+      <a
+        [class.active]="
+          vista() === 'login'
+        "
+        (click)="mostrarLogin()"
+      >
+        Iniciar sesión
+      </a>
+
+
+      <a
+        [class.active]="
+          vista() === 'registro'
+        "
+        (click)="mostrarRegistro()"
+      >
+        Crear cuenta
+      </a>
+
+    } @else {
+
+      <span class="nav-user">
+
+        👤
+        {{ usuarioActual()?.nombre }}
+
+      </span>
+
+
+      <button
+        class="logout-button"
+        (click)="cerrarSesion()"
+      >
+        Salir
+      </button>
+
+    }
 
   </nav>
 
@@ -349,6 +427,358 @@
 
   </main>
 
+
+<!-- ================================================= -->
+<!-- LOGIN -->
+<!-- ================================================= -->
+
+} @else if (vista() === 'login') {
+
+  <main class="auth-page">
+
+    <section class="auth-card">
+
+      <span class="tag">
+        Bienvenido de vuelta
+      </span>
+
+      <h1>
+        Iniciar sesión
+      </h1>
+
+      <p class="auth-description">
+        Accede a tu cuenta para disfrutar
+        las funciones personalizadas de Planify.
+      </p>
+
+      <label>
+        Correo electrónico
+
+        <input
+          #loginEmail
+          type="email"
+          placeholder="correo@ejemplo.cl"
+          autocomplete="email"
+        />
+      </label>
+
+      <label>
+        Contraseña
+
+        <input
+          #loginPassword
+          type="password"
+          placeholder="Tu contraseña"
+          autocomplete="current-password"
+        />
+      </label>
+
+      <button
+        class="auth-main-button"
+        [disabled]="cargandoAuth()"
+        (click)="iniciarSesion(
+          loginEmail.value,
+          loginPassword.value
+        )"
+      >
+        @if (cargandoAuth()) {
+          Ingresando...
+        } @else {
+          Iniciar sesión
+        }
+      </button>
+
+      @if (mensajeAuth()) {
+        <div class="auth-message">
+          {{ mensajeAuth() }}
+        </div>
+      }
+
+      <p class="auth-secondary">
+        ¿Aún no tienes cuenta?
+
+        <button (click)="mostrarRegistro()">
+          Crear cuenta
+        </button>
+      </p>
+
+    </section>
+
+  </main>
+
+
+<!-- ================================================= -->
+<!-- REGISTRO -->
+<!-- ================================================= -->
+
+} @else if (vista() === 'registro') {
+
+  <main class="auth-page">
+
+    <section class="auth-card register-card">
+
+      <span class="tag">
+        Únete a Planify
+      </span>
+
+      <h1>
+        Crear cuenta
+      </h1>
+
+      <p class="auth-description">
+        Regístrate como persona o como negocio.
+      </p>
+
+      <label>
+        Nombre
+
+        <input
+          #registroNombre
+          type="text"
+          placeholder="Tu nombre"
+        />
+      </label>
+
+      <label>
+        Correo electrónico
+
+        <input
+          #registroEmail
+          type="email"
+          placeholder="correo@ejemplo.cl"
+          autocomplete="email"
+        />
+      </label>
+
+      <div class="form-row">
+
+        <label>
+          Contraseña
+
+          <input
+            #registroPassword
+            type="password"
+            placeholder="Mínimo 6 caracteres"
+            autocomplete="new-password"
+          />
+        </label>
+
+        <label>
+          Confirmar contraseña
+
+          <input
+            #registroPassword2
+            type="password"
+            placeholder="Repite tu contraseña"
+            autocomplete="new-password"
+          />
+        </label>
+
+      </div>
+
+      <label>
+        Tipo de cuenta
+
+        <select #registroTipo>
+          <option value="PERSONA">
+            Persona
+          </option>
+
+          <option value="NEGOCIO">
+            Negocio
+          </option>
+        </select>
+      </label>
+
+      <label>
+        Nombre del negocio
+
+        <input
+          #registroNegocio
+          type="text"
+          placeholder="Solo para cuentas de negocio"
+        />
+      </label>
+
+      <div class="form-row">
+
+        <label>
+          Rango de edad
+
+          <select #registroEdad>
+            <option value="">
+              Prefiero no indicar
+            </option>
+
+            <option value="18-24">
+              18 - 24
+            </option>
+
+            <option value="25-34">
+              25 - 34
+            </option>
+
+            <option value="35-44">
+              35 - 44
+            </option>
+
+            <option value="45-54">
+              45 - 54
+            </option>
+
+            <option value="55+">
+              55+
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Comuna
+
+          <input
+            #registroComuna
+            type="text"
+            placeholder="Ej: Maipú"
+          />
+        </label>
+
+      </div>
+
+      <label>
+        Intereses
+
+        <input
+          #registroIntereses
+          type="text"
+          placeholder="Ej: parques, gastronomía, cultura"
+        />
+      </label>
+
+      <button
+        class="auth-main-button"
+        [disabled]="cargandoAuth()"
+        (click)="registrarUsuario(
+          registroNombre.value,
+          registroEmail.value,
+          registroPassword.value,
+          registroPassword2.value,
+          registroTipo.value,
+          registroEdad.value,
+          registroComuna.value,
+          registroIntereses.value,
+          registroNegocio.value
+        )"
+      >
+        @if (cargandoAuth()) {
+          Creando cuenta...
+        } @else {
+          Crear cuenta
+        }
+      </button>
+
+      @if (mensajeAuth()) {
+        <div class="auth-message">
+          {{ mensajeAuth() }}
+        </div>
+      }
+
+      <p class="auth-secondary">
+        ¿Ya tienes cuenta?
+
+        <button (click)="mostrarLogin()">
+          Iniciar sesión
+        </button>
+      </p>
+
+    </section>
+
+  </main>
+
+
+<!-- ================================================= -->
+<!-- PERFIL -->
+<!-- ================================================= -->
+
+} @else if (vista() === 'perfil') {
+
+  <main class="auth-page">
+
+    @if (usuarioActual(); as usuario) {
+
+      <section class="profile-card">
+
+        <div class="profile-avatar">
+          👤
+        </div>
+
+        <span class="tag">
+          Cuenta Planify
+        </span>
+
+        <h1>
+          {{ usuario.nombre }}
+        </h1>
+
+        <p>
+          {{ usuario.email }}
+        </p>
+
+        <div class="profile-info">
+
+          <div>
+            <span>
+              Tipo de cuenta
+            </span>
+
+            <strong>
+              {{ usuario.tipo_usuario }}
+            </strong>
+          </div>
+
+          @if (usuario.tipo_usuario === 'NEGOCIO') {
+
+            <div>
+              <span>
+                Negocio
+              </span>
+
+              <strong>
+                {{ usuario.nombre_negocio }}
+              </strong>
+            </div>
+
+            <div>
+              <span>
+                Estado
+              </span>
+
+              <strong>
+                {{ estadoNegocioTexto() }}
+              </strong>
+            </div>
+
+          }
+
+        </div>
+
+        <button
+          class="auth-main-button"
+          (click)="cerrarSesion()"
+        >
+          Cerrar sesión
+        </button>
+
+      </section>
+
+    }
+
+  </main>
+
+
+<!-- ================================================= -->
+<!-- ADMIN -->
+<!-- ================================================= -->
+
 } @else if (vista() === 'admin') {
 
   <main class="admin-page">
@@ -436,13 +866,9 @@
             🎉 Ver eventos
           </button>
 
-          <button (click)="mostrarNegocios()">
-            🏪 Panel negocio
-          </button>
-
           <a
             class="admin-django"
-            href="https://planify-api-j9o2.onrender.com/admin/"
+            href="http://127.0.0.1:8000/admin/"
             target="_blank"
           >
             ⚙️ Abrir Django Admin
@@ -536,7 +962,7 @@
           </div>
 
           <span class="business-status">
-            ● Negocio activo
+            ● {{ estadoNegocioTexto() }}
           </span>
 
         </div>
@@ -614,6 +1040,7 @@
 
           <button
             class="publish-button"
+            [disabled]="!negocioPuedePublicar()"
             (click)="crearEvento(
               titulo.value,
               descripcion.value,
@@ -622,7 +1049,11 @@
               lugar.value
             )"
           >
-            Publicar evento
+            @if (negocioPuedePublicar()) {
+              Publicar evento
+            } @else {
+              Esperando verificación
+            }
           </button>
 
 
