@@ -1,0 +1,65 @@
+
+digraph G {
+  graph [rankdir=TB, bgcolor="white", pad="0.25", nodesep="0.28", ranksep="0.45",
+         fontname="Arial", label="CU06 - Registro de Usuario Persona | Planify v0.3",
+         labelloc="t", fontsize=20];
+  node [shape=box, style="rounded,filled", fillcolor="#E8F4EA", color="#2F6F4E",
+        fontname="Arial", fontsize=10, margin="0.12,0.08"];
+  edge [fontname="Arial", fontsize=9, color="#4A5568"];
+
+  start [shape=circle, label="", width=0.18, fixedsize=true, fillcolor="#111111", color="#111111"];
+  end [shape=doublecircle, label="", width=0.20, fixedsize=true, fillcolor="#111111", color="#111111"];
+
+  subgraph cluster_user {
+    label="Usuario / Visitante"; color="#B8C6D9"; style="rounded"; fontname="Arial"; fontsize=12;
+    A01 [label="A01 Seleccionar\n“Crear cuenta”"];
+    A03 [label="A03 Ingresar nombre,\ncorreo, contraseña y\ndatos opcionales"];
+  }
+
+  subgraph cluster_ng {
+    label="Frontend Angular"; color="#B8C6D9"; style="rounded"; fontname="Arial"; fontsize=12;
+    A02 [label="A02 Mostrar formulario\nde registro"];
+    A04 [label="A04 Validar campos\nobligatorios"];
+    A05 [shape=diamond, label="¿Datos locales\nválidos?", width=1.4, height=0.9];
+    A06 [label="A06 Mostrar error\nde formulario"];
+    A07 [label="A07 POST\n/api/auth/register/"];
+    A15 [label="A15 Guardar token\nen localStorage"];
+    A16 [label="A16 Mostrar\nMi Perfil"];
+    A09b [label="A09 Mostrar error:\ncorreo ya registrado"];
+  }
+
+  subgraph cluster_api {
+    label="Django REST API"; color="#B8C6D9"; style="rounded"; fontname="Arial"; fontsize=12;
+    A08 [label="A08 Validar correo,\ncontraseña y rol"];
+    D1 [shape=diamond, label="¿Correo ya\nexiste?", width=1.35, height=0.9];
+    A09 [label="A09 Responder\n400 Bad Request"];
+    A10 [label="A10 Crear User\nDjango"];
+    A11 [label="A11 Crear Perfil\nPERSONA"];
+    A13 [label="A13 Generar token\nde autenticación"];
+    A14 [label="A14 Retornar token\ny datos del usuario"];
+  }
+
+  subgraph cluster_db {
+    label="PostgreSQL"; color="#B8C6D9"; style="rounded"; fontname="Arial"; fontsize=12;
+    A12 [label="A12 Registrar User\ny Perfil en BD"];
+  }
+
+  start -> A01 -> A02 -> A03 -> A04 -> A05;
+  A05 -> A06 [label="No"];
+  A06 -> A03 [label="Corregir"];
+  A05 -> A07 [label="Sí"];
+  A07 -> A08 -> D1;
+  D1 -> A09 [label="Sí"];
+  A09 -> A09b -> end;
+  D1 -> A10 [label="No"];
+  A10 -> A11 -> A12 -> A13 -> A14 -> A15 -> A16 -> end;
+
+  legend [shape=plaintext, label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="5">
+      <TR><TD BGCOLOR="#E8F4EA">Implementada</TD><TD>Actividad comprobada en v0.3</TD></TR>
+      <TR><TD BGCOLOR="#FFF3D6">Parcial</TD><TD>Implementación incompleta</TD></TR>
+      <TR><TD BGCOLOR="#FDECEC">Pendiente</TD><TD>No implementada</TD></TR>
+    </TABLE>
+  >];
+  A16 -> legend [style=invis];
+}
