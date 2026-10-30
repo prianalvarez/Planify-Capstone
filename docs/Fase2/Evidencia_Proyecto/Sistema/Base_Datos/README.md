@@ -1,34 +1,36 @@
 ﻿# Evidencia de Base de Datos - Planify
 
-## Motor
-PostgreSQL
+## Motor de base de datos
+PostgreSQL.
 
 ## Base de datos
-planify_db
+planify_db.
 
 ## Integración
-La aplicación utiliza Django ORM y Django REST Framework para almacenar y consultar información.
+Planify utiliza Django ORM y Django REST Framework para almacenar, validar y consultar la información persistida en PostgreSQL.
 
 ## Datos principales
-Actualmente el sistema maneja, entre otros:
+Actualmente el sistema gestiona:
 
-- Lugares
-- Eventos
-- Usuarios Django
-- Perfiles Planify
-- Tokens de autenticación
+- Lugares.
+- Eventos.
+- Usuarios Django.
+- Perfiles Planify.
+- Tokens de autenticación.
 
 ## Evidencia técnica
-La configuración y modelos se encuentran principalmente en:
+La configuración, modelos y migraciones se encuentran principalmente en:
 
 - backend/config/settings.py
 - backend/lugares/models.py
-- backend/usuarios/models.py
 - backend/lugares/migrations/
+- backend/usuarios/models.py
 - backend/usuarios/migrations/
 
 ## Persistencia
-Los registros creados desde Planify son persistidos en PostgreSQL y recuperados mediante la API REST.
+Los registros creados por la aplicación son almacenados en PostgreSQL y posteriormente recuperados mediante la API REST.
 
-## Despliegue
-La versión publicada utiliza PostgreSQL en Render, mientras que el entorno de desarrollo utiliza PostgreSQL local.
+## Entornos
+Durante el desarrollo se utiliza PostgreSQL local.
+
+La versión desplegada utiliza PostgreSQL asociado al servicio de Planify en Render.
